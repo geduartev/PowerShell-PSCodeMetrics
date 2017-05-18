@@ -1,4 +1,11 @@
-Ôªø#
+<#
+	My Function
+#>
+function Get-Function {
+
+}
+
+#
 # CodeMetrics.ps1
 #
 
@@ -101,7 +108,7 @@ $endProcess = [DateTime]::Now
 '////////////////////////////////////////////////////////////////////////////////////////'
 ''
 '========================================================================================'
-'REPORTE AN√ÅLISIS DIRECTORIO: ' + $path
+'REPORTE AN¡LISIS DIRECTORIO: ' + $path
 '========================================================================================'
 ''
 'Fecha y hora del reporte: ' + [DateTime]::Now
@@ -112,28 +119,28 @@ $endProcess = [DateTime]::Now
 ''
 '----------------------------------------------------------------------------------------'
 ''
-'ESTADISTICAS - Cantidad de L√≠neas.'
+'ESTADISTICAS - Cantidad de LÌneas.'
 '----------------------------------------------------------------------------------------'
 ''
 ' Total: ' + $data.TotalLines
 ''
-' C√≥digo: ' + $data.CodeLines
-' Vac√≠as: ' + $data.BlankLines
-' Comentadas: ' + $data.CommentedLines + ' (Incluidos los comentarios que est√°n en la misma l√≠nea del c√≥digo.)'
+' CÛdigo: ' + $data.CodeLines
+' VacÌas: ' + $data.BlankLines
+' Comentadas: ' + $data.CommentedLines + ' (Incluidos los comentarios que est·n en la misma lÌnea del cÛdigo.)'
 ''
 ''
 'ESTADISTICAS - Porcentaje con respecto al Total.'
 '----------------------------------------------------------------------------------------'
 ''
-' % C√≥digo: ' + $data.PercentageCodeLines
-' % Vac√≠o: ' + $data.PercentageBlankLines
+' % CÛdigo: ' + $data.PercentageCodeLines
+' % VacÌo: ' + $data.PercentageBlankLines
 ' % Comentadas: ' + $data.PercentageCommentedLines
 ''
 ''
-'ESTADISTICAS - Porcentaje con respecto al ' + $data.PercentageCodeLines + ' de L√≠neas de C√≥digo.'
+'ESTADISTICAS - Porcentaje con respecto al ' + $data.PercentageCodeLines + ' de LÌneas de CÛdigo.'
 '----------------------------------------------------------------------------------------'
 ''
-' % Vac√≠as: ' + $data.RelationBetweenBlankAndCodeLines
+' % VacÌas: ' + $data.RelationBetweenBlankAndCodeLines
 ' % Comentadas: ' + $data.RelationBetweenCommentedAndCodeLines
 ''
 ''
@@ -141,3 +148,36 @@ $endProcess = [DateTime]::Now
 ''
 ''
 ''
+
+
+
+$projectsName = Get-Location | Split-Path -Leaf;
+$dateTimeReport = [DateTime]::Now;
+$measurements = @{
+    "Codigo"="60%";
+    "Comentarios"="20%";
+    "Vacio"="20%"
+}
+
+Create-PieChart -FileName ((Get-Location).Path + "\" + $dateTimeReport + "-chart-" + "$projectsName") -Mesaurements $measurements
+
+    
+$parameters = @{
+    ComputersName = 'asdf';
+    Directory = Get-Location;
+    ProjectName = $projectsName;
+    DatetimeReport = $dateTimeReport;
+    FilesProcessed = 2330;
+    TotalLines = 15342;
+    CodeLines = 2342;
+    PercentageCodeLines = 23;
+    CommentLines = 345;
+    PercentageCommentLines = 56;
+    BlankLines = 67;
+    PercentageBlankLines = 3;
+}
+
+Create-HtmlReport -Parameters $parameters
+
+#$ ListOfAttachments += "chart-$projectsName.png"
+#S end-MailMessage -from $fromemail -to $users -subject "Systems Report" -Attachments $ListOfAttachments -BodyAsHTML -body $HTMLmessage -priority Normal -smtpServer $server
